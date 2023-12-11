@@ -1,6 +1,9 @@
-[workspace]
-members = [
-    "server",
-    "mars_calc",
-    "memory_management",
-]
+[package]
+name = "rust-server"
+version = "0.1.0"
+authors = ["codymaki <codymaki@live.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]

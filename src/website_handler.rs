@@ -15,9 +15,17 @@ impl WebsiteHandler {
         let path = format!("{}/{}", self.public_path, file_path);
 
         match fs::canonicalize(path) {
-            Ok(path) => {
-                if path.starts_with(&self.public_path) {
-                    fs::read_to_string(path).ok()
+            Ok(path_buf) => {
+                println!("Is public? : {}", path_buf.as_path().starts_with(&self.public_path));
+                println!("path_buf : {}", path_buf.as_path().display());
+                println!("public_path : {}", &self.public_path);
+
+                // not ideal but this line is to canonicalize the public path so it matches the same format as the path we are checking
+                // this is needed on windows machines because sometimes \\? will be added to the start of the canonicalized path
+                let public_path= fs::canonicalize(&self.public_path).unwrap().into_os_string().into_string().unwrap();
+
+                if path_buf.as_path().starts_with(public_path) {
+                    fs::read_to_string(path_buf).ok()
                 } else {
                     println!("Directory Traversal Attack Attempted: {}", file_path);
                     None
